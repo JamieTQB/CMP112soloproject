@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -5,31 +6,45 @@ public class obstacleGenerator : MonoBehaviour
 {
     float randomX;
     float randomZ;
-    Vector3 maxCoords;
+    float maxCoordX;
+    float maxCoordZ;
+    float obstacleHeight;
+    Vector3 minCoords;
+    Collider obstBounding;
+    
     public GameObject Ground;
     public GameObject Obstacle;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        maxCoords = Ground.GetComponent<Transform>().position;
-        /*for (int i = 0; i > 10; i++)
+        obstacleHeight = Obstacle.transform.localScale.y / 2;
+        maxCoordX = Ground.transform.localScale.x * 4;
+        maxCoordZ = Ground.transform.localPosition.z * 2;   
+        minCoords = -Ground.transform.localScale;
+        Vector3 position = new Vector3(Random.Range(minCoords.x * 4, maxCoordX), obstacleHeight, Random.Range(minCoords.z, maxCoordZ));
+        obstBounding = Obstacle.GetComponent<Collider>();
+        Instantiate(Obstacle, position, Quaternion.identity);
+        for (int i = 0; i < 9; i++)
         {
-            Vector3 position = new Vector3(Random.Range(0f, maxCoords.x), 5f, Random.Range(0f, maxCoords.y));
-            Instantiate(Obstacle, position, Quaternion.identity);
-            Debug.Log("cube spawned");
-        }*/
+            if (!obstBounding.bounds.Intersects(obstBounding.bounds))
+            {
+                Instantiate(Obstacle, position, Quaternion.identity);
+            }
+            else
+            {
+                Vector3 position2 = new Vector3(Random.Range(minCoords.x * 4, maxCoordX), obstacleHeight, Random.Range(minCoords.z, maxCoordZ));
+                Instantiate(Obstacle, position2, Quaternion.identity);
+            }
+           
+        }
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Vector3 position = new Vector3(Random.Range(0f, maxCoords.x), 5f, Random.Range(0f, maxCoords.z));
-            Instantiate(Obstacle, position, Quaternion.identity);
-            Debug.Log("cube spawned");
-        }
+        
     }
 
     void generateObstacles()
