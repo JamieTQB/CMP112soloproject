@@ -9,11 +9,12 @@ public class obstacleGenerator : MonoBehaviour
     float maxCoordX;
     float maxCoordZ;
     float obstacleHeight;
-    Vector3 minCoords;
     Collider obstBounding;
-    
+
+    public Vector3 minCoords;
     public GameObject Ground;
     public GameObject Obstacle;
+    public float obstacleAmount;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,11 +22,11 @@ public class obstacleGenerator : MonoBehaviour
         obstacleHeight = Obstacle.transform.localScale.y / 2;
         maxCoordX = Ground.transform.localScale.x * 4;
         maxCoordZ = Ground.transform.localPosition.z * 2;   
-        minCoords = -Ground.transform.localScale;
+        //minCoords = -Ground.transform.localScale;
         Vector3 position = new Vector3(Random.Range(minCoords.x * 4, maxCoordX), obstacleHeight, Random.Range(minCoords.z, maxCoordZ));
         obstBounding = Obstacle.GetComponent<Collider>();
         Instantiate(Obstacle, position, Quaternion.identity);
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < obstacleAmount - 1; i++)
         {
             if (!obstBounding.bounds.Intersects(obstBounding.bounds))
             {
@@ -33,7 +34,7 @@ public class obstacleGenerator : MonoBehaviour
             }
             else
             {
-                Vector3 position2 = new Vector3(Random.Range(minCoords.x * 4, maxCoordX), obstacleHeight, Random.Range(minCoords.z, maxCoordZ));
+                Vector3 position2 = new Vector3(Random.Range(minCoords.x, maxCoordX), obstacleHeight, Random.Range(minCoords.z, maxCoordZ));
                 Instantiate(Obstacle, position2, Quaternion.identity);
             }
            

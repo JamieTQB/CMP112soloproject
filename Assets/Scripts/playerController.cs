@@ -1,12 +1,15 @@
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
     Rigidbody rb;
-    float moveLeft;
-    float moveRight;
     public float speed;
-
+    public float boostSpeed;
+    bool boosting;
+    Vector3 movement;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,12 +38,36 @@ public class playerController : MonoBehaviour
             rb.rotation = Quaternion.Euler(0, 0, -45).normalized;
             movement = rb.transform.right;
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Boost());
+            boosting = true;
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Menu");
+        }
         if (!(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
         {
             rb.rotation = Quaternion.identity;
         }
-        movement = movement.normalized * speed;
-        rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
-        //rb.rotation = Quaternion.Euler(0, 0, 0);
+        if (boosting)
+        {
+            movement = movement.normalized * speed * boostSpeed;
+            rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
+        }
+        else
+        {
+            movement = movement.normalized * speed;
+            rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
+        }
+       
+        
+    }
+
+    IEnumerator Boost()
+    {
+        yield return new WaitForSeconds(1f);
+        boosting = false;
     }
 }
