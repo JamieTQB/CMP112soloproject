@@ -3,6 +3,7 @@ using UnityEngine;
 public class goalScript : MonoBehaviour
 {
     public GameObject player;
+    gameStateClass state;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +21,7 @@ public class goalScript : MonoBehaviour
         if (other.gameObject == player)
         {
             Debug.Log("finish!");
+            
         }
     }
 }
