@@ -1,27 +1,20 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+//this script is for what happens when the player reaches the goal
 public class goalScript : MonoBehaviour
 {
     public GameObject player;
+    public Timer timerActive;
+    public TimeSheet timesheet;
     gameStateClass state;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    //checks when the player collides with the yellow goal zone, and turns off the timer
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == player)
         {
-            Debug.Log("finish!");
-            
+            SceneManager.LoadScene("Results");
+            timerActive.stopwatchActive = false;
         }
     }
 }
